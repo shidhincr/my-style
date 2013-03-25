@@ -6,6 +6,15 @@
   var SOFT_TAB = '    ';
   var SOFT_TAB_LENGTH = SOFT_TAB.length;
 
+  var throttle = function( fn , timeout){
+    return function t(event){
+      clearTimeout(t.tmr);
+      t.tmr = setTimeout(function(){
+        fn.apply(null,arguments);
+      },timeout);
+    }
+  };
+
   window.addEventListener('DOMContentLoaded', function(event) {
     var head = document.getElementsByTagName('head')[0];
     var body = document.body;
@@ -28,11 +37,14 @@
       textarea.value = '/* Enter your styles here. */';
     }
 
-    // continually update styles with textarea content
-    textarea.addEventListener('keyup', function(event) {
+    var updateStyle = throttle( function(){
       style.innerHTML = textarea.value;
       localStorage.myStyle = style.innerHTML;
-    });
+    }, 700 );
+
+    // continually update styles with textarea content
+    textarea.addEventListener('keyup', updateStyle);
+    textarea.addEventListener('change', updateStyle);
 
     // pressing tab should insert spaces instead of focusing another element
     textarea.addEventListener('keydown', function(event) {
