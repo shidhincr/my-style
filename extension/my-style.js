@@ -6,12 +6,12 @@
   var SOFT_TAB = '    ';
   var SOFT_TAB_LENGTH = SOFT_TAB.length;
 
-  var throttle = function( fn , timeout){
-    return function t(event){
-      clearTimeout(t.tmr);
-      t.tmr = setTimeout(function(){
-        fn.apply(null,arguments);
-      },timeout);
+  function throttle(fn, timeout) {
+    return function throttledFn(event) {
+      clearTimeout(throttledFn.timer);
+      throttledFn.timer = setTimeout(function() {
+        fn.apply(null, arguments);
+      }, timeout);
     }
   };
 
@@ -37,10 +37,10 @@
       textarea.value = '/* Enter your styles here. */';
     }
 
-    var updateStyle = throttle( function(){
+    var updateStyle = throttle(function() {
       style.innerHTML = textarea.value;
       localStorage.myStyle = style.innerHTML;
-    }, 700 );
+    }, 700);
 
     // continually update styles with textarea content
     textarea.addEventListener('keyup', updateStyle);
