@@ -7,10 +7,11 @@
   var SOFT_TAB_LENGTH = SOFT_TAB.length;
 
   function throttle(fn, timeout) {
-    return function throttledFn(event) {
+    return function throttledFn() {
+      var args = arguments;
       clearTimeout(throttledFn.timer);
       throttledFn.timer = setTimeout(function() {
-        fn.apply(null, arguments);
+        fn.apply(null, args);
       }, timeout);
     }
   };
